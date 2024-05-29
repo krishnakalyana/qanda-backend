@@ -1,6 +1,6 @@
-import { getUserByEmail } from "db/user"
+import { createUser, getUserByEmail } from "db/user"
 import express from "express"
-import { random } from "helpers"
+import { authentication, random } from "helpers"
 
 export const register = async (req:express.Request,res:express.Response)=>{
     try{
@@ -13,6 +13,15 @@ export const register = async (req:express.Request,res:express.Response)=>{
            return res.sendStatus(400)
         }
         const salt = random()
+        const user = await createUser({
+            email,
+            username,
+            authentication:{
+                salt,
+                password:authentication(salt,password),
+            },
+        })
+        return res.sendStatus(201).json(user).end()
     }catch(error){
         console.log("Error in Register api",error);
       return  res.sendStatus(400)
