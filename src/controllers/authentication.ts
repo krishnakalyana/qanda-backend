@@ -46,7 +46,7 @@ export const login = async (req:express.Request,res:express.Response)=>{
         user.authentication.sessionToken = authentication(salt,user._id.toString())
         await user.save()
         res.cookie(process.env.COOKIE_KEY,user.authentication.sessionToken,{domain:process.env.DOMAIN,path:process.env.PATH})
-        return res.send(200).json(user).end();
+        return res.status(200).json(user).end();
     } catch(error){
         console.log("Error in login",error);
         return res.sendStatus(400)
