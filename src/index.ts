@@ -19,12 +19,12 @@ app.use(bodyParser.json())
 const server = http.createServer(app)
 
 const MONGO_URL =process.env.MONGO_CONNECTION
-server.listen(8080,()=>{
-    console.log("Server started on http://localhost:8080");
+server.listen(process.env.PORT!,()=>{
+    console.log(`Server started on http://localhost:${process.env.PORT!}`);
 })
 
 mongoose.Promise = Promise
-mongoose.connect(process.env.MONGO_CONNECTION)
+mongoose.connect(process.env.MONGO_CONNECTION!)
 mongoose.connection.on("error",(error:Error)=>{
 console.log("error in Mongo connection",error);
 })
