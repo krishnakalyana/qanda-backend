@@ -68,9 +68,9 @@ export const login = async (req: express.Request, res: express.Response) => {
        
         user.authentication.sessionToken = token;
         await user.save();
-        const userWithoutAuth = omit(user.toObject(), ['authentication.password', 'authentication.salt']);
+        const userWithoutAuth = omit(user.toObject(), ['authentication.password', 'authentication.salt','authentication','__v']);
         res.cookie(process.env.COOKIE_KEY, token, {
-            maxAge: 7200,
+            maxAge: 3600000, // 1 hour in milliseconds
             httpOnly: true,
             sameSite: "none",
             secure: true,
