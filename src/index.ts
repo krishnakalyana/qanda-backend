@@ -7,11 +7,21 @@ import cors from "cors"
 import 'dotenv/config'
 import mongoose from "mongoose"
 import router from "./router"
+import session from 'express-session';
 const app = express()
 
 app.use(cors({
     credentials:true
 }))
+app.use(session({
+    secret: process.env.SESSION_SECRET, // Add your session secret
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      secure: true, // Ensure cookies are only sent over HTTPS
+      sameSite: 'strict' // Helps mitigate CSRF attacks
+    }
+  }));
 app.use(cookieParser())
 app.use(compression())
 app.use(bodyParser.json())
