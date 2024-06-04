@@ -57,7 +57,7 @@ export const login = async (req: express.Request, res: express.Response) => {
                     userId: user.id,
                     email: user.email
                 },
-                process.env.SESSION_SECRET,
+                process.env.SECRET_KEY,
                 { expiresIn: "1h" }
             );
         } catch (err) {
@@ -69,6 +69,12 @@ export const login = async (req: express.Request, res: express.Response) => {
         user.authentication.sessionToken = token;
         await user.save();
         const userWithoutAuth = omit(user.toObject(), ['authentication.password', 'authentication.salt']);
+        res.cookie(process.env.COOKIE_KEY, token, {
+            maxAge: 7200,
+            httpOnly: true,
+            sameSite: "none",
+            secure: true,
+           })
 
         return res.status(200).json(userWithoutAuth);
     } catch (error) {

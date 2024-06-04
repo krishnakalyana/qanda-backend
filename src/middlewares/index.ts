@@ -3,14 +3,13 @@ import {get,merge} from "lodash"
 import { getUserBySessionToken } from "../db/user"
 export const isAuthenticatied =async(req:express.Request,res:express.Response,next:express.NextFunction)=>{
     try{
-        const sessionToken =req.headers.authorization
+        const sessionToken =req.cookies[process.env.COOKIE_KEY]
         if(!sessionToken){
            return res.sendStatus(401)
         }
-        let token= sessionToken.split(" ")[1]
-        
-        const existingUser = await getUserBySessionToken(token)
-        
+  
+        const existingUser = await getUserBySessionToken(sessionToken)
+
         if(!existingUser){
            return res.sendStatus(401)
         }
