@@ -18,6 +18,6 @@ export const isAuthenticatied =async(req:express.Request,res:express.Response,ne
     }
     catch(error){
         console.log("Error in is authenticated",error)
-        return res.sendStatus(400)
+        return res.sendStatus(401)
     }
 }

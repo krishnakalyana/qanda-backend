@@ -71,7 +71,7 @@ export const login = async (req: express.Request, res: express.Response) => {
         const userWithoutAuth = omit(user.toObject(), ['authentication.password', 'authentication.salt','authentication','__v']);
         res.cookie(process.env.COOKIE_KEY, token, {
             maxAge: 3600000, // 1 hour in milliseconds
-            httpOnly: true,
+            // httpOnly: true,
             sameSite: "none",
             secure: true,
            })
@@ -82,3 +82,10 @@ export const login = async (req: express.Request, res: express.Response) => {
         return res.status(500).json({ error: "Internal Server Error" });
     }
 };
+export const isLoggedIn = async (req:express.Request,res:express.Response)=>{
+    try{
+        return res.status(200).json({isLoggedIn:true}).end()
+    }catch(error){
+        return res.sendStatus(401)
+    }
+}
